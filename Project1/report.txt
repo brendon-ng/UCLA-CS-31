@@ -1,0 +1,12 @@
+Brendon Ng
+304-925-492
+UCLA CS 31 Lec 2 Dis 2B
+Prof. Smallberg
+
+Report - Programming Assignment 1: Getting Started with C++
+
+Step 5: Inputted numbers to produce a result that did not make sense. For example, I put in the number of people surveyed to be 87, but the number of people to vote for Cox as 125 and the number of people to vote for Newsom as 150, more than the number surveyed. This produced nonsensical outputs saying 172.4% said they will vote for Newsom and 143.7% said they would vote for Cox. This obviously is not possible because the percentages are over 100%. In another trial I entered -100 for the amount of people surveyed. The percentages came out to be negative which also is not possible.
+
+Step 6: Logic Error - In the lines where the percentages were calculated, instead of having 100.0 * forNewsom / numberSurveyed, I replaced the division with an addition sign. For the pctCox variable, I replaced the division with a subtraction sign. Putting in a reasonable input of 7000 surveyed, 4300 for Newsom and 2700 for Cox, the program fails to correctly compute percentages, outputting 437000% for Newsom and 263000% for Cox.
+
+Step 7: Compile Error - The first compile error I produced was by removing the semicolon from the line in which the variable forNewsom was declared. With the missing semicolon, the program failed to compile, showing the error message “Expected ‘;’ last the end of declaration.” For the second error, I removed the ‘double’ in front of the pctCox declaration. This caused the program to try to reference a variable that had not been declared yet. The error message “Use of undeclared identifier ‘perCox’” was shown.
