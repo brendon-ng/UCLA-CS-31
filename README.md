@@ -1,11 +1,7 @@
-# Stats 20 Labs and Exams
+# UCLA CS 31 Projects and Assignments
 #### Brendon Ng
-#### Stats 20: Statistical Programming with R
-#### UCLA Spring 2018
-#### Prof. Vivian Lew
-Included are all lab assignments and laboratory exams from Stats 20 taken during the Spring of 2018. Labs were written in R Markdown files and the final visual lab write up is saved in a HTML files. <br/><br/>
+#### Fall 2018
+#### Prof. David A. Smallberg
+Included are all projects and programming assignments from CS 31 taken during the Fall of 2018 at UCLA. All assignments are programmed in C++. <br/><br/>
 
-To see final products for lab assignments and exams, download the repo and open the corresponding HTML file. <br/><br/>
-
-Topics include graphics, visualizing data, manipulating DataFrames, extracting data, drawing conclusions from datasets, and more.
 
