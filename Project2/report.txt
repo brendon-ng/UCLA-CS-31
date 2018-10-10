@@ -1,0 +1,27 @@
+Brendon Ng
+304-925-492
+UCLA CS 31 Lec 1 Dis 1A
+Prof. Smallberg
+
+Report - Programming Assignment 2: Rental Reckoning
+
+A) The obstacles I overcame were finding a way to exit the program when a bad input was given. I initially thought "return;" would work to end the program like in Java but I had to rethink before coming to "exit(0)" to end the program after a bad input.
+
+B) Test Inputs
+Negative starting odometer: (-90, no other inputs taken - program ended)
+Ending odometer less than start: (90, 80, no other inputs taken - program ended)
+Rental days negative: (380, 503, -9, no other inputs taken - program ended)
+Rental days 0: (4532, 4809, 0, no other inputs taken - program ended)
+Empty string for name: (88134, 90013, 7, "", no other inputs taken - program ended)
+Luxury status not y or n: (193, 434, 6, "Brendon", "w", no other inputs taken - program ended)
+Month is zero: (832, 932, 1, "Smallberg", "y", 0, no other inputs taken - program ended)
+Month is greater than 12: (8233, 8572, 8, "Gene", "n", 13, no other inputs taken - program ended)
+Correct input, Elon Musk example (2417, 2754, 4, "Elon Musk", "n", 10) --> $208.77
+Correct input, John DeLorean example (1885, 1973, 1, "John DeLorean, "y", 2) --> $84.76
+Correct input, luxury car, non winter (4742, 9240, 10, "Max", "y", 9) --> $1478.62
+Correct input, luxury car, winter (4742, 9240, 10, "Max", "y", 1) --> $1496.62
+Correct input, non luxury, non winter (4742, 9240, 10, "Max", "n", 10) --> $1198.62
+Correct input, non luxury, winter (4742, 9240, 10, "Max", "n", 12) --> $1216.62
+Correct input, miles < 100: (0, 85, 7, "Matt", "y", 3) --> $449.95
+Correct input, 100 < miles < 400: (0, 340, 7, "Matt", "y", 3) --> $518.80
+Correct input, miles > 400: (0, 500, 7, "Matt", "y", 3) --> $554.00

@@ -1,6 +1,6 @@
 Brendon Ng
 304-925-492
-UCLA CS 31 Lec 2 Dis 2B
+UCLA CS 31 Lec 1 Dis 1A
 Prof. Smallberg
 
 Report - Programming Assignment 1: Getting Started with C++
