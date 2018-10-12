@@ -12,6 +12,7 @@ using namespace std;
 
 
 int main() {
+
     // get odometer at start input
     cout << "Odometer at start: ";
     int start;
