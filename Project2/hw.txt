@@ -10,3 +10,13 @@ endlendl
 grendel
 
 2)
+It will print out a right triangle of #'s with (side) rows, with each row having one more # than the last, starting with row 1 having 1 #. Ending with a row of (side) #'s. Each row will have as many #'s as its row number.
+Ex: side = 5
+Output:
+#
+##
+###
+####
+#####
+
+3)
