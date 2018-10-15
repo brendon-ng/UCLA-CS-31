@@ -21,7 +21,7 @@ int main() {
     {
         cout << "---" << endl;
         cout << "The starting odometer reading must be nonnegative." << endl;
-        exit(0);
+        return 1;
     }
     
     // get odometer at end input
@@ -32,7 +32,7 @@ int main() {
     {
         cout << "---" << endl;
         cout << "The final odometer reading must be at least as large as the starting reading." << endl;
-        exit(0);
+        return 1;
     }
     
     // get rental days input
@@ -43,7 +43,7 @@ int main() {
     {
         cout << "---" << endl;
         cout << "The number of rental days must be positive." << endl;
-        exit(0);
+        return 1;
     }
     
     cin.ignore(10000, '\n'); // ignore new line left over from cin of int so getline() works
@@ -56,7 +56,7 @@ int main() {
     {
         cout << "---" << endl;
         cout << "You must enter a customer name." << endl;
-        exit(0);
+        return 1;
     }
     
     // get yes or no input for luxury car
@@ -67,7 +67,7 @@ int main() {
     {
         cout << "---" << endl;
         cout << "You must enter y or n." << endl;
-        exit(0);
+        return 1;
     }
     
     // get month number input
@@ -78,7 +78,7 @@ int main() {
     {
         cout << "---" << endl;
         cout << "The month number must be in the range 1 through 12." << endl;
-        exit(0);
+        return 1;
     }
     
     double cost = 0.0; // initialize total cost variable
