@@ -20,3 +20,78 @@ Output:
 #####
 
 3)
+
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	int side;
+	
+	cout << "Enter a number: ";
+	cin >> side;
+
+	for (int i = 0; i < side; i++)
+	{
+		int j = i;
+		while (j >=0)
+		{
+			cout << "#";
+			j--;
+		}
+		cout << "\n";
+	}
+}
+
+
+
+4)
+
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	int side;
+	
+	cout << "Enter a number: ";
+	cin >> side;
+
+	int i = 0;
+
+	while (i < side)
+	{
+		int j = i;
+		while (j >=0)
+		{
+			cout << "#";
+			j--;
+		}
+		cout << "\n";
+		i++;
+	}
+}
+
+
+5)
+
+switch (codeSection) {
+        case 281:
+            cout << "bigamy";
+            break;
+        case 321:
+            cout << "selling illegal lottery tickets";
+            break;
+        case 322:
+            cout << "selling illegal lottery tickets";
+            break;
+        case 383:
+            cout << "selling rancid butter";
+            break;
+        case 598:
+            cout << "injuring a bird in a public cemetery";
+            break;
+        default:
+            cout << "some other crime";
+            break;
+}

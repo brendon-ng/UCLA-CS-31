@@ -12,19 +12,7 @@ using namespace std;
 
 
 int main() {
-    int side;
     
-    cout << "Enter a number: ";
-    cin >> side;
-    
-    for (int i = 0; i < side; i++)
-    {
-        for (int j = i; j >= 0; j--)
-        {
-            cout << "#";
-        }
-        cout << "\n";
-    }
     // get odometer at start input
     cout << "Odometer at start: ";
     int start;
