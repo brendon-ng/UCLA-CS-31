@@ -5,7 +5,7 @@ Prof. Smallberg
 
 Report - Programming Assignment 2: Rental Reckoning
 
-A) The obstacles I overcame were finding a way to exit the program when a bad input was given. I initially thought "return;" would work to end the program like in Java but I had to rethink before coming to "exit(0)" to end the program after a bad input.
+A) The obstacles I overcame were finding a way to exit the program when a bad input was given. I initially thought "return;" would work to end the program like in Java but I had to rethink and wait for the FAQ document before coming to "return 1;" to end the program with exit code 1 after a bad input.
 
 B) Test Inputs
 Negative starting odometer: (-90, no other inputs taken - program ended)
