@@ -7,6 +7,7 @@
 //
 
 #include <iostream>
+#include <string>
 using namespace std;
 
 bool isValidUppercaseStateCode(string stateCode)
@@ -92,22 +93,59 @@ bool hasProperSyntax(string pollData)
 
 int tallySeats(string pollData, char party, int& seatTally)
 {
+    //If not a proper poll data string
     if(!hasProperSyntax(pollData))
         return 1;
+    
+    //If party is not a letter
     if(!isalpha(party))
         return 2;
     
-    //TODO: Finish
+    seatTally=0;
+    
+    for(int i=0; i<pollData.size(); i++)
+    {
+        if(toupper(pollData[i]) == toupper(party)) //Identify party by letter
+        {
+            if(isdigit(pollData[i-2])) //If a two digit number precedes
+            {
+                seatTally += atoi(pollData.substr(i-2,i).c_str());
+            }
+            else //If a one digit number precedes
+            {
+                seatTally += atoi(pollData.substr(i-1,i).c_str());
+            }
+            
+            
+        }
+    }
     
     return 0;
 }
 
 
 int main(){
-    cout << hasProperSyntax("") << endl;
-    cout << hasProperSyntax("Ca38d24r,IL22w3u,RI3e34i,AK93w42k89e8s0w9m,") << endl;
-    if (hasProperSyntax("CT5D,NY9R17D1I,VT,ne3r00D"))
-        cout << "Passed test 1: hasProperSyntax(\"CT5D,NY9R17D1I,VT,ne3r00D\")" << endl;
-    if (!hasProperSyntax("ZT5D,NY9R17D1I,VT,ne3r00D"))
-        cout << "Passed test 2: !hasProperSyntax(\"ZT5D,NY9R17D1I,VT,ne3r00D\")" << endl;
+    int seats = -999;
+    cout << tallySeats("", 'd', seats) << endl;
+    cout << seats << endl << endl;
+    
+    seats = -999;
+    cout << tallySeats("CA4s53j3d32i53D", 'd', seats) << endl;
+    cout << seats << endl << endl;
+    
+    seats = -999;
+    cout << tallySeats("CA4s53j3d32i53dD", 'd', seats) << endl;
+    cout << seats << endl << endl;
+    
+    seats = -999;
+    cout << tallySeats("CA4s73j3d32i53D", 'j', seats) << endl;
+    cout << seats << endl << endl;
+    
+    seats = -999;
+    cout << tallySeats("CA4s53j3d32i53D", '9', seats) << endl;
+    cout << seats << endl << endl;
+
+    seats = -999;
+    cout << tallySeats("CA4s53j3d32i53D,MT83d2g24l2j,VT42y00d13k,NY,HI32k", 'd', seats) << endl;
+    cout << seats << endl << endl;
 }
