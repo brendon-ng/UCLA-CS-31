@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <string>
+#include <cassert>
 using namespace std;
 
 bool isValidUppercaseStateCode(string stateCode)
@@ -125,9 +126,44 @@ int tallySeats(string pollData, char party, int& seatTally)
 
 
 int main(){
-    int seats = -999;
+    
+    
+    
+    
+    
+    int seats;
+    
+    seats = -999;
+    cout << tallySeats("CT5D,NY9R17D1I,VT,ne3r00D", 'd', seats) << endl;
+    cout << seats << endl << endl;
+    
+    seats = -999;
+    cout << tallySeats("KS4R, NV3D1R", 'd', seats) << endl;
+    cout << seats << endl << endl;
+    
+    seats = -999;
     cout << tallySeats("", 'd', seats) << endl;
     cout << seats << endl << endl;
+    
+    seats = -999;
+    cout << tallySeats("NY9R17D1I,VT,NJ3D5R4D,KS4R", 'd', seats) << endl;
+    cout << seats << endl << endl; //Should be 24
+    seats = -999;
+    cout << tallySeats("NY9R17D1I,VT,NJ3D5R4D,KS4R", 'R', seats) << endl;
+    cout << seats << endl << endl; //Should be 18
+    seats = -999;
+    cout << tallySeats("NY9R17D1I,VT,NJ3D5R4D,KS4R", 'i', seats) << endl;
+    cout << seats << endl << endl; //Should be 1
+    
+    //tests from spec
+    assert(hasProperSyntax("CT5D,NY9R17D1I,VT,ne3r00D"));
+    assert(!hasProperSyntax("ZT5D,NY9R17D1I,VT,ne3r00D"));
+    seats = 0;
+    seats = -999;    // so we can detect whether tallySeats sets seats
+    assert(tallySeats("CT5D,NY9R17D1I,VT,ne3r00D", 'd', seats) == 0  &&  seats == 22);
+    seats = -999;    // so we can detect whether tallySeats sets seats
+    assert(tallySeats("CT5D,NY9R17D1I,VT,ne3r00D", '%', seats) == 2  &&  seats == -999);
+    cout << "All tests succeeded (From Project 3 Spec)" << endl;
     
     seats = -999;
     cout << tallySeats("CA4s53j3d32i53D", 'd', seats) << endl;
