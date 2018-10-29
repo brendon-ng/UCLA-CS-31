@@ -1,0 +1,10 @@
+Brendon Ng
+304-925-492
+UCLA CS 31 Lec 1 Dis 1A
+Prof. Smallberg
+
+Report - Programming Assignment 3: House Party
+
+1. Getting numbers in character form to translate into integer form was difficult as I got the encoding when I tried something like "int int = pollData[i];" The page on the class website about strings and integers helped a lot in this aspect. Also, thinking and drafting up a way to iterate through the string to check if it was the correct format while not going out of bounds was difficult. I ended up iterating through the individual characters and checking backwards to see if the letter or digit was in an invalid spot.
+
+2. 
