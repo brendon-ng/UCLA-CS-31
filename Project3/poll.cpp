@@ -104,17 +104,25 @@ int tallySeats(string pollData, char party, int& seatTally)
     
     seatTally=0;
     
-    for(int i=0; i<pollData.size(); i++)
+    for(int i=2; i<pollData.size(); i++)
     {
         if(toupper(pollData[i]) == toupper(party)) //Identify party by letter
         {
+            if(!isdigit(pollData[i-1])) //If the prev char is not a digit it is part of a state code
+            {
+                continue;
+            }
+            
             if(isdigit(pollData[i-2])) //If a two digit number precedes
             {
-                seatTally += atoi(pollData.substr(i-2,i).c_str());
+                int tens = pollData[i-2] - '0';
+                int ones = pollData[i-1] - '0';
+                seatTally += tens * 10 + ones;
             }
             else //If a one digit number precedes
             {
-                seatTally += atoi(pollData.substr(i-1,i).c_str());
+                int ones = pollData[i-1] - '0';
+                seatTally += ones;
             }
             
             
@@ -134,26 +142,22 @@ int main(){
     int seats;
     
     seats = -999;
-    cout << tallySeats("CT5D,NY9R17D1I,VT,ne3r00D", 'd', seats) << endl;
-    cout << seats << endl << endl;
+    assert(tallySeats("CT5D,NY9R17D1I,VT,ne3r00D", 'd', seats) == 0 && seats == 17+5);
     
     seats = -999;
-    cout << tallySeats("KS4R, NV3D1R", 'd', seats) << endl;
-    cout << seats << endl << endl;
+    assert(tallySeats("KS4R, NV3D1R", 'd', seats) == 1 && seats == -999);
+
+    seats = -999;
+    assert(tallySeats("", 'd', seats) == 0 && seats == 0);
     
     seats = -999;
-    cout << tallySeats("", 'd', seats) << endl;
-    cout << seats << endl << endl;
+    assert(tallySeats("NY9R17D1I,VT,NJ3D5R4D,KS4R", 'd', seats) == 0 && seats == 24);
     
     seats = -999;
-    cout << tallySeats("NY9R17D1I,VT,NJ3D5R4D,KS4R", 'd', seats) << endl;
-    cout << seats << endl << endl; //Should be 24
+    assert(tallySeats("NY9R17D1I,VT,NJ3D5R4D,KS4R", 'R', seats) == 0 && seats == 18);
+    
     seats = -999;
-    cout << tallySeats("NY9R17D1I,VT,NJ3D5R4D,KS4R", 'R', seats) << endl;
-    cout << seats << endl << endl; //Should be 18
-    seats = -999;
-    cout << tallySeats("NY9R17D1I,VT,NJ3D5R4D,KS4R", 'i', seats) << endl;
-    cout << seats << endl << endl; //Should be 1
+    assert(tallySeats("NY9R17D1I,VT,NJ3D5R4D,KS4R", 'i', seats) == 0 && seats == 1);
     
     //tests from spec
     assert(hasProperSyntax("CT5D,NY9R17D1I,VT,ne3r00D"));
@@ -166,22 +170,29 @@ int main(){
     cout << "All tests succeeded (From Project 3 Spec)" << endl;
     
     seats = -999;
-    cout << tallySeats("CA4s53j3d32i53D", 'd', seats) << endl;
-    cout << seats << endl << endl;
+    assert(tallySeats("CA4s53j3d32i53D", 'd', seats) == 0 && seats == 3+53);
     
     seats = -999;
-    cout << tallySeats("CA4s53j3d32i53dD", 'd', seats) << endl;
-    cout << seats << endl << endl;
+    assert(tallySeats("CA4s53j3d32i53dD", 'd', seats) == 1 && seats == -999);
     
     seats = -999;
-    cout << tallySeats("CA4s73j3d32i53D", 'j', seats) << endl;
-    cout << seats << endl << endl;
-    
-    seats = -999;
-    cout << tallySeats("CA4s53j3d32i53D", '9', seats) << endl;
-    cout << seats << endl << endl;
+    assert(tallySeats("CA4s73j3d32i53D", 'j', seats) == 0 && seats == 73);
 
     seats = -999;
-    cout << tallySeats("CA4s53j3d32i53D,MT83d2g24l2j,VT42y00d13k,NY,HI32k", 'd', seats) << endl;
-    cout << seats << endl << endl;
+    assert(tallySeats("CA4s53j3d32i53D", '9', seats) == 2 && seats == -999);
+
+    seats = -999;
+    assert(tallySeats("CA4s53j3d32i53D,MT83d2g24l2j,VT42y00d13k,NY,HI32k", 'd', seats) == 0 && seats == 3+53+83+0);
+    
+    seats = -999;
+    assert(tallySeats("CA4s53j3d32i53D,MT83d2c24l2j,VT42y00d13k,NY,HI32T", 'T', seats) == 0 && seats == 32);
+    
+    seats = -999;
+    assert(tallySeats("CA4s53j3d32i53D,MT83m2c24l2j,VT42y00d13m,NY,HI32T", 'm', seats) == 0 && seats == 83+13);
+    
+    seats = -999;
+    assert(tallySeats("CA4s53j3d32i53D,MT83m2CA24l2j,VT42y00d13m,NY,HI32T", 'm', seats) == 1 && seats == -999);
+           
+           
+    cout << "ALL tests succeeded" << endl;
 }
