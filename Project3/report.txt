@@ -44,6 +44,8 @@ tallySeats(string pollData, char party, int& seatTally)
 End function
 
 
+
+
 3. Test Cases
 Tests that were examples in the spec:
 	tallySeats("CT5D,NY9R17D1I,VT,ne3r00D", 'd', seats) - was an example of a valid syntax
@@ -73,6 +75,12 @@ Other Test Cases:
 	tallySeats("CA4s53j3d32i53D,MT83d2c24l2j,VT42y00d13k,NY,HI32T", 'T', seats) - party letter is a part of a state code
 	tallySeats("CA4s53j3d32i53D,MT83m2c24l2j,VT42y00d13m,NY,HI32T", 'm', seats) - party letter part of a state code at the beginning
 	tallySeats("CA4s53j3d32i53D,MT83m2CA24l2j,VT42y00d13m,NY,HI32T", 'm', seats) - invalid syntax, state code in the middle without a comma
+	tallySeats("CA4s53j3d32i53D,MT83m2C24l2j, VT42y00d13m,NY,HI32T", 'm', seats) - invalid syntax, space between comma and state code
+	tallySeats("CA4s53j3d32i53D,MZ83m2C24l2j,VT42y00d13m,NY,HI32T", 'm', seats) - invalid state code
+	tallySeats("CA4s53j3d32i53D,MT83m2C24l2j,VT42y00d13m,NY,HI32T", 'n', seats) - searches for party letter that is not in the string
+	tallySeats("CA4s53j3d32i53D,MT83m2C24l2j,VT42y00d13m,,HI32T", 'm', seats) - double commas, must be valid syntax 
+	tallySeats(",CA4s53j3d32i53D,MT83m2C24l2j,VT42y00d13m,,HI32T", 'm', seats) - invalid syntax, comma in beginning of string
+	tallySeats("CA4s53j3d32i53D,MT83m2C24l2j,VT42y00d13m,,HI32T,", 'm', seats) - invalid syntax, comma at the end of the string
 
 
 

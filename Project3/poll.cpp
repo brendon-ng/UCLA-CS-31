@@ -66,6 +66,9 @@ bool isProperStateForecast(string stateForecast)
 
 bool hasProperSyntax(string pollData)
 {
+    if(pollData[0] == ',' || pollData[pollData.size()-1] == ',')
+        return false;
+    
     string stateForecast = "";
     for(int i=0; i<pollData.size(); i++)
     {
@@ -192,7 +195,28 @@ int main(){
     
     seats = -999;
     assert(tallySeats("CA4s53j3d32i53D,MT83m2CA24l2j,VT42y00d13m,NY,HI32T", 'm', seats) == 1 && seats == -999);
+    
+    seats = -999;
+    assert(tallySeats("CA4s53j3d32i53D,MT83m2C24l2j, VT42y00d13m,NY,HI32T", 'm', seats) == 1 && seats == -999);
+    
+    seats = -999;
+    assert(tallySeats("CA4s53j3d32i53D,MZ83m2C24l2j,VT42y00d13m,NY,HI32T", 'm', seats) == 1 && seats == -999);
            
-           
+    seats = -999;
+    assert(tallySeats("CA4s53j3d32i53D,MT83m2C24l2j,VT42y00d13m,NY,HI32T", 'n', seats) == 0 && seats == 0);
+    
+    seats = -999;
+    assert(tallySeats("CA4s53j3d32i53D,MT83m2C24l2j,VT42y00d13m,,HI32T", 'm', seats) == 0 && seats == 83+13);
+    
+    assert(hasProperSyntax("MA9D,KS4R")  &&  hasProperSyntax("KS4R,MA9D"));
+    assert(hasProperSyntax("MA9D,,KS4R") == hasProperSyntax("KS4R,,MA9D"));
+    
+    seats = -999;
+    assert(tallySeats(",CA4s53j3d32i53D,MT83m2C24l2j,VT42y00d13m,,HI32T", 'm', seats) == 1 && seats == -999);
+    
+    seats = -999;
+    assert(tallySeats("CA4s53j3d32i53D,MT83m2C24l2j,VT42y00d13m,,HI32T,", 'm', seats) == 1 && seats == -999);
+
+    
     cout << "ALL tests succeeded" << endl;
 }
