@@ -138,10 +138,6 @@ int tallySeats(string pollData, char party, int& seatTally)
 
 int main(){
     
-    
-    
-    
-    
     int seats;
     
     seats = -999;

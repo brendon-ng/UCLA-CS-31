@@ -10,6 +10,7 @@ Report - Programming Assignment 3: House Party
 2. 
 For the hasProperSyntax() function, I chose to break it up into checking each individual state forecast with another method called isProperStateForecast(). I iterated through the pollData string–if any character was ever not a digit or letter, the function returned false–adding each character to a temporary string until it reached a comma, then setting the previously built string to the isProperStateForecast() function.
 
+...
 hasProperSyntax(string pollData)
 	Iterate through every char in string:
 		if the current char is not a letter or digit:
@@ -21,7 +22,9 @@ hasProperSyntax(string pollData)
 	end loop
 	return result of final stateForecast string left over from the loop.
 end function
+...
 
+...
 isProperStateForecast(string stateForecast)
 	if stateForecast is empty string return true
 	if stateForecast has length of 1 return false
@@ -32,9 +35,11 @@ isProperStateForecast(string stateForecast)
 		if the current char is anything but a letter or digit return false
 	if it makes it through all these tests its a valid string return true
 End function
+...
 
 For tallySeats() function, I iterated through the string until finding a letter that matches the party letter (making sure that it isn't part of a state code) and I checked the previous two characters before that and extracted whatever numerical value from that and added it to the seatTally variable.
 
+...
 tallySeats(string pollData, char party, int& seatTally)
 	if the pollData doesn't have proper syntax return 1
 	if the party is not a letter return 2
@@ -42,6 +47,7 @@ tallySeats(string pollData, char party, int& seatTally)
 		if the current char matches the party letter make sure it's not part of a state code and add the value of the preceding digits to seatTally variable.
 	return 0
 End function
+...
 
 
 
