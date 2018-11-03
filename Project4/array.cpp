@@ -92,23 +92,42 @@ int differ(const string a1[], int n1, const string a2[], int n2){
 }
 
 int subsequence(const string a1[], int n1, const string a2[], int n2){
-    if(n1 < 0 || n2 < 0)
+    if(n1 < 0 || n2 < 0 || n1 < n2)
         return -1;
-    if(n2 ==0)
+    if(n2 == 0)
         return 0;
     if(n1 == 0)
         return -1;
-    for(int i=0; i < n1-n2; i++){
+    for(int i=0; i <= n1-n2; i++){
         if(a1[i]==a2[0]){
+            bool cont = false;
             for(int j=i+1, k=1; j < i+n2; j++, k++){
-                if(a1[j] != a2[k])
-                    continue;
+                if(a1[j] != a2[k]){
+                    cont = true;
+                    break;
+                }
             }
+            if(cont)
+                continue;
             return i;
         }
     }
     return -1;
 }
+
+int lookupAny(const string a1[], int n1, const string a2[], int n2){
+    if(n1<=0 || n2<=0)
+        return -1;
+    for(int i=0; i<n1; i++){
+        for(int j=0; j<n2; j++){
+            if(a1[i]==a2[j])
+                return i;
+        }
+    }
+    return -1;
+}
+
+
 
 
 int main(int argc, const char * argv[]) {
@@ -203,6 +222,32 @@ int main(int argc, const char * argv[]) {
     assert(subsequence(names, 6, names1, 3) == 1);
     string names2[10] = { "eleni", "greg" };
     assert(subsequence(names, 5, names2, 2) == -1);
+    assert(subsequence(names, 5, names2, 0) == 0);
+    assert(subsequence(names, 0, names2, 2) == -1);
+    assert(subsequence(names, 1, names2, 2) == -1);
+    string names3[5] ={"eleni", "gavin", "kevin", "greg", "betty"};
+    string names4[5] = {"greg","betty"};
+    string names5[5] = {"greg", "alex"};
+    assert(subsequence(names3, 5, names3, 3) == 0);
+    assert(subsequence(names3, 5, names4, 2) == 3);
+    assert(subsequence(names3, 5, names3, 5) == 0);
+    assert(subsequence(names3, 5, names5, 1) == 3);
+    assert(subsequence(names3, 5, names5, 2) == -1);
+    
+    //Test cases for lookupAny()
+    string lookupNames[10] = { "eleni", "gavin", "kevin", "greg", "betty", "fiona" };
+    string set1[10] = { "dianne", "betty", "greg", "gavin" };
+    assert(lookupAny(lookupNames, 6, set1, 4) == 1);
+    string set2[10] = { "xavier", "ed" };
+    assert(lookupAny(lookupNames, 6, set2, 2) == -1);
+    assert(lookupAny(lookupNames, 4, lookupNames, 4) == 0);
+    set2[2] = "eleni";
+    assert(lookupAny(lookupNames, 4, set2, 3) == 0);
+    set2[2] = "fiona";
+    assert(lookupAny(lookupNames, 4, set2, 3) == -1);
+    assert(lookupAny(lookupNames, 6, set2, 3) == 5);
+    
+    
 
     
     
