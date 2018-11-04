@@ -45,7 +45,7 @@ int positionOfMax(const string a[], int n){
 }
 
 int rotateLeft(string a[], int n, int pos){
-    if (n < 0 || pos > n)
+    if (n < 0 || pos >= n)
         return -1;
     string move = a[pos];
     for(int i=pos; i < n-1; i++){
@@ -529,10 +529,21 @@ int main() {
     assert(flip(f, 3) == 3 && f[0] == "john" && f[2] == "fiona");
     
     assert(divide(h, 7, "fiona") == 3);
-    cout << divide(h, 7, "greg") << endl;
+    cout << divide(h, 7, "eleni") << endl;
     for (int i=0; i<7; i++) {
         cout << h[i] << endl;
     }
+    
+    cout << divide(h, 7, "ed") << endl;
+    for (int i=0; i<7; i++) {
+        cout << h[i] << endl;
+    }
+    
+    cout << divide(h, 7, "") << endl;
+    for (int i=0; i<7; i++) {
+        cout << h[i] << endl;
+    }
+    
     
    
     
