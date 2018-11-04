@@ -127,10 +127,51 @@ int lookupAny(const string a1[], int n1, const string a2[], int n2){
     return -1;
 }
 
+int divide(string a[], int n, string divider){
+    if(n<0)
+        return -1;
+    int i = 0;
+    int j = n-1;
+    
+    string stringi = "";
+    string stringj = "";
+    bool iLoaded = false;
+    bool jLoaded = false;
+    while(i<=j){
+        if(a[i] >= divider){
+            stringi = a[i];
+            iLoaded = true;
+        }
+        else{
+            i++;
+            stringi = "";
+            iLoaded = false;
+        }
+        
+        if(a[j] < divider){
+            stringj = a[j];
+            jLoaded = true;
+        }
+        else{
+            j--;
+            stringj = "";
+            jLoaded = false;
+        }
+        
+        if(iLoaded && jLoaded){
+            a[i] =  stringj;
+            a[j] =  stringi;
+            i++;
+            j--;
+        }
+    }
+    
+
+    return i;
+}
 
 
-
-int main(int argc, const char * argv[]) {
+int main() {
     //Test cases for appendToAll()
     string people[5] = { "dianne", "fiona", "ed", "xavier", "greg" };
     int j = appendToAll(people, 5, "!!!");  // returns 5
@@ -247,19 +288,251 @@ int main(int argc, const char * argv[]) {
     assert(lookupAny(lookupNames, 4, set2, 3) == -1);
     assert(lookupAny(lookupNames, 6, set2, 3) == 5);
     
+    //Test cases for divide()
+    string candidates[6] = { "dianne", "fiona", "gavin", "xavier", "ed", "betty" };
+    int n = 6;
+    string divider = "eleni";
+    int dividei = divide(candidates, n, divider);
+    assert(dividei == 3);
+    for(int i=0; i<n; i++){
+        if(i < dividei)
+            assert(candidates[i] < divider);
+        else
+            assert(candidates[i] >= divider);
+    }
     
+    // candidate must now be
+    //      "dianne"  "ed"  "betty"  "fiona"  "xavier"  "gavin"
+    // or   "ed"  "betty"  "dianne"  "gavin"  "fiona"  "xavier"
+    // or one of several other orderings.
+    // All elements < "eleni" (i.e., "ed", "betty", and "dianne")
+    //   come before all others
+    // All elements > "eleni" (i.e., "xavier", "fiona", and "gavin")
+    //   come after all others
+    string candidate2[4] = { "gavin", "kevin", "fiona", "john" };
+    n = 4;
+    divider = "john";
+    dividei = divide(candidate2, n, divider);
+    assert(dividei == 2);
+    for(int i=0; i<n; i++){
+        if(i < dividei){
+            assert(candidate2[i] < divider);
+        }
+        else{
+            assert(candidate2[i] >= divider);
+        }
+    }
+    // candidate2 must now be either
+    //      "gavin"  "fiona"  "john"  "kevin"
+    // or   "fiona"  "gavin"  "john"  "kevin"
+    // All elements < "john" (i.e., "fiona" and "gavin") come
+    // before all others.
+    // All elements > "john" (i.e., "kevin") come after all others.
+    
+    string abcs[7] = {"b", "c", "d", "e", "f", "g", "h"};
+    n = 7;
+    divider = "z";
+    dividei = divide(abcs, n, divider);
+    assert(dividei == n);
+    for(int i=0; i<n; i++){
+        if(i < dividei){
+            assert(abcs[i] < divider);
+        }
+        else{
+            assert(abcs[i] >= divider);
+        }
+    }
+    
+    n = 7;
+    divider = "a";
+    dividei = divide(abcs, n, divider);
+    assert(dividei == 0);
+    for(int i=0; i<n; i++){
+        if(i < dividei){
+            assert(abcs[i] < divider);
+        }
+        else{
+            assert(abcs[i] >= divider);
+        }
+    }
+    
+    n = 7;
+    divider = "e";
+    dividei = divide(abcs, n, divider);
+    assert(dividei == 3);
+    for(int i=0; i<n; i++){
+        if(i < dividei){
+            assert(abcs[i] < divider);
+        }
+        else{
+            assert(abcs[i] >= divider);
+        }
+    }
+    
+    n = 7;
+    divider = "f";
+    dividei = divide(abcs, n, divider);
+    assert(dividei == 4);
+    for(int i=0; i<n; i++){
+        if(i < dividei){
+            assert(abcs[i] < divider);
+        }
+        else{
+            assert(abcs[i] >= divider);
+        }
+    }
+    n = 7;
+    divider = "h";
+    dividei = divide(abcs, n, divider);
+    assert(dividei == 6);
+    for(int i=0; i<n; i++){
+        if(i < dividei){
+            assert(abcs[i] < divider);
+        }
+        else{
+            assert(abcs[i] >= divider);
+        }
+    }
+    
+    n = 7;
+    divider = "b";
+    dividei = divide(abcs, n, divider);
+    assert(dividei == 0);
+    for(int i=0; i<n; i++){
+        if(i < dividei){
+            assert(abcs[i] < divider);
+        }
+        else{
+            assert(abcs[i] >= divider);
+        }
+    }
+    
+    string abcsScattered[10] = {"s","c","e","j","q","y","a","z","x","x"};
+    n = 10;
+    divider = "b";
+    dividei = divide(abcsScattered, n, divider);
+    assert(dividei == 1);
+    for(int i=0; i<n; i++){
+        if(i < dividei){
+            assert(abcsScattered[i] < divider);
+        }
+        else{
+            assert(abcsScattered[i] >= divider);
+        }
+    }
+    
+    n = 10;
+    divider = "a";
+    dividei = divide(abcsScattered, n, divider);
+    assert(dividei == 0);
+    for(int i=0; i<n; i++){
+        if(i < dividei){
+            assert(abcsScattered[i] < divider);
+        }
+        else{
+            assert(abcsScattered[i] >= divider);
+        }
+    }
+    
+    n = 10;
+    divider = "z";
+    dividei = divide(abcsScattered, n, divider);
+    assert(dividei == 9);
+    for(int i=0; i<n; i++){
+        if(i < dividei){
+            assert(abcsScattered[i] < divider);
+        }
+        else{
+            assert(abcsScattered[i] >= divider);
+        }
+    }
+    
+    n = 10;
+    divider = "ze";
+    dividei = divide(abcsScattered, n, divider);
+    assert(dividei == 10);
+    for(int i=0; i<n; i++){
+        if(i < dividei){
+            assert(abcsScattered[i] < divider);
+        }
+        else{
+            assert(abcsScattered[i] >= divider);
+        }
+    }
+    
+    n = 10;
+    divider = "m";
+    dividei = divide(abcsScattered, n, divider);
+    assert(dividei == 4);
+    for(int i=0; i<n; i++){
+        if(i < dividei){
+            assert(abcsScattered[i] < divider);
+        }
+        else{
+            assert(abcsScattered[i] >= divider);
+        }
+    }
+    
+    n = 10;
+    divider = "x";
+    dividei = divide(abcsScattered, n, divider);
+    assert(dividei == 6);
+    for(int i=0; i<n; i++){
+        if(i < dividei){
+            assert(abcsScattered[i] < divider);
+        }
+        else{
+            assert(abcsScattered[i] >= divider);
+        }
+    }
+    
+    string abcsScattered2[10] = {"s","c","e","j","q","x","x","a","y","y"};
+    n = 10;
+    divider = "x";
+    dividei = divide(abcsScattered2, n, divider);
+    assert(dividei == 6);
+    for(int i=0; i<n; i++){
+        if(i < dividei){
+            assert(abcsScattered2[i] < divider);
+        }
+        else{
+            assert(abcsScattered2[i] >= divider);
+        }
+    }
+
 
     
     
     
     
     
-    
+    //More tests from spec
     string h[7] = { "greg", "gavin", "ed", "xavier", "", "eleni", "fiona" };
     assert(lookup(h, 7, "eleni") == 5);
     assert(lookup(h, 7, "ed") == 2);
     assert(lookup(h, 2, "ed") == -1);
     assert(positionOfMax(h, 7) == 3);
+    
+    string g[4] = { "greg", "gavin", "fiona", "kevin" };
+    assert(differ(h, 4, g, 4) == 2);
+    assert(appendToAll(g, 4, "?") == 4 && g[0] == "greg?" && g[3] == "kevin?");
+    assert(rotateLeft(g, 4, 1) == 1 && g[1] == "fiona?" && g[3] == "gavin?");
+    
+    string e[4] = { "ed", "xavier", "", "eleni" };
+    assert(subsequence(h, 7, e, 4) == 2);
+    
+    string d1[5] = { "gavin", "gavin", "gavin", "xavier", "xavier" };
+    assert(countRuns(d1, 5) == 2);
+    
+    string f[3] = { "fiona", "ed", "john" };
+    assert(lookupAny(h, 7, f, 3) == 2);
+    assert(flip(f, 3) == 3 && f[0] == "john" && f[2] == "fiona");
+    
+    assert(divide(h, 7, "fiona") == 3);
+    cout << divide(h, 7, "greg") << endl;
+    for (int i=0; i<7; i++) {
+        cout << h[i] << endl;
+    }
     
    
     
