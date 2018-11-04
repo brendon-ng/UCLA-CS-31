@@ -14,18 +14,16 @@ using namespace std;
 int appendToAll(string a[], int n, string value) {
     if(n < 0)
         return -1;
-    for(int i=0; i < n; i++){
+    for(int i=0; i < n; i++){ //Iterate through array and append value
         a[i] =  a[i] + value;
     }
     return n;
 }
 
 int lookup(const string a[], int n, string target) {
-    if(n < 0)
-        return -1;
-    for(int i=0; i < n; i++){
+    for(int i=0; i < n; i++){ //Iterate through array, trying to find target
         if(a[i] == target)
-            return i;
+            return i; //When target is found, it is the first appearance so return the index
     }
     return -1;
 }
@@ -35,7 +33,8 @@ int positionOfMax(const string a[], int n){
         return -1;
     string max = "";
     int index = 0;
-    for(int i=0; i < n; i++){
+    for(int i=0; i < n; i++){ //Iterate through array
+        //If current element is > than previous max, we dont use >= because we want first instance of the max
         if(a[i] > max){
             index = i;
             max = a[i];
@@ -48,10 +47,10 @@ int rotateLeft(string a[], int n, int pos){
     if (n < 0 || pos >= n)
         return -1;
     string move = a[pos];
-    for(int i=pos; i < n-1; i++){
-        a[i] = a[i+1];
+    for(int i=pos; i < n-1; i++){ //start at pos and go until the second to last element of the array
+        a[i] = a[i+1]; //assign next element to current element
     }
-    a[n-1] = move;
+    a[n-1] = move; //set the final element as the element at pos
     return pos;
 }
 
@@ -63,8 +62,8 @@ int countRuns(const string a[], int n){
     if(n == 1)
         return 1;
     int count = 1;
-    for(int i=1; i < n; i++){
-        if(a[i] != a[i-1])
+    for(int i=1; i < n; i++){ //start at second element in array (already know n > 1
+        if(a[i] != a[i-1]) //if the previous element != current, then it marks the end of a run
             count++;
     }
     return count;
@@ -73,8 +72,8 @@ int countRuns(const string a[], int n){
 int flip(string a[], int n){
     if(n < 0)
         return -1;
-    for(int i=0; i<n/2; i++){
-        string temp = a[i];
+    for(int i=0; i<n/2; i++){ //iterate through half of the array, rounds down so middle element of odd value of n stays the same
+        string temp = a[i]; //switch current element and corresponding element at the end of array
         a[i] = a[n-i-1];
         a[n-i-1] = temp;
     }
@@ -84,7 +83,7 @@ int flip(string a[], int n){
 int differ(const string a1[], int n1, const string a2[], int n2){
     if(n1 < 0 || n2 < 0)
         return -1;
-    for(int i=0; i < min(n1, n2); i++){
+    for(int i=0; i < min(n1, n2); i++){ //iterate through enough elements for the smaller array
         if(a1[i] != a2[i])
             return i;
     }
@@ -529,17 +528,10 @@ int main() {
     assert(flip(f, 3) == 3 && f[0] == "john" && f[2] == "fiona");
     
     assert(divide(h, 7, "fiona") == 3);
-    cout << divide(h, 7, "eleni") << endl;
-    for (int i=0; i<7; i++) {
-        cout << h[i] << endl;
-    }
-    
-    cout << divide(h, 7, "ed") << endl;
-    for (int i=0; i<7; i++) {
-        cout << h[i] << endl;
-    }
-    
-    cout << divide(h, 7, "") << endl;
+    assert(divide(h, 7, "eleni") == 2);
+    assert(divide(h, 7, "ed") == 1);
+
+    assert(divide(h, 7, "") == 0);
     for (int i=0; i<7; i++) {
         cout << h[i] << endl;
     }
