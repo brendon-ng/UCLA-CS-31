@@ -84,7 +84,7 @@ int differ(const string a1[], int n1, const string a2[], int n2){
     if(n1 < 0 || n2 < 0)
         return -1;
     for(int i=0; i < min(n1, n2); i++){ //iterate through enough elements for the smaller array
-        if(a1[i] != a2[i])
+        if(a1[i] != a2[i]) // finds earliest index where elements dont match
             return i;
     }
     return min(n1,n2);
@@ -93,15 +93,13 @@ int differ(const string a1[], int n1, const string a2[], int n2){
 int subsequence(const string a1[], int n1, const string a2[], int n2){
     if(n1 < 0 || n2 < 0 || n1 < n2)
         return -1;
-    if(n2 == 0)
+    if(n2 == 0) // Zero element sequence is subsequence of any sequence
         return 0;
-    if(n1 == 0)
-        return -1;
-    for(int i=0; i <= n1-n2; i++){
-        if(a1[i]==a2[0]){
+    for(int i=0; i <= n1-n2; i++){ //Iterate through all elements in array that will allow subsequence to fit afterwards
+        if(a1[i]==a2[0]){ // If the current element is equal to the first in a2 then we can search the upcoming elements
             bool cont = false;
-            for(int j=i+1, k=1; j < i+n2; j++, k++){
-                if(a1[j] != a2[k]){
+            for(int j=i+1, k=1; j < i+n2; j++, k++){ // Iterate through both arrays now
+                if(a1[j] != a2[k]){ //If corresponding elements aren't equal, continue outer loop
                     cont = true;
                     break;
                 }
@@ -117,8 +115,8 @@ int subsequence(const string a1[], int n1, const string a2[], int n2){
 int lookupAny(const string a1[], int n1, const string a2[], int n2){
     if(n1<=0 || n2<=0)
         return -1;
-    for(int i=0; i<n1; i++){
-        for(int j=0; j<n2; j++){
+    for(int i=0; i<n1; i++){ // Iterate thru each element in a1 array
+        for(int j=0; j<n2; j++){ // Compare current element to each one in a2 array
             if(a1[i]==a2[j])
                 return i;
         }
@@ -129,36 +127,36 @@ int lookupAny(const string a1[], int n1, const string a2[], int n2){
 int divide(string a[], int n, string divider){
     if(n<0)
         return -1;
-    int i = 0;
-    int j = n-1;
+    int i = 0; // Index from front
+    int j = n-1; // Index from end
     
     string stringi = "";
     string stringj = "";
     bool iLoaded = false;
     bool jLoaded = false;
     while(i<=j){
-        if(a[i] >= divider){
-            stringi = a[i];
+        if(a[i] >= divider){ // If current element from the front is >= divider, it needs to be moved
+            stringi = a[i]; // Load the current value into temporary place holder to be swapped
             iLoaded = true;
         }
-        else{
+        else{ // Increment index and ensure nothing is "loaded" or pending to be moved from front
             i++;
             stringi = "";
             iLoaded = false;
         }
         
-        if(a[j] < divider){
-            stringj = a[j];
+        if(a[j] < divider){ // If current element from the back is < divider, it needs to be moved
+            stringj = a[j]; // // Load the current value into temporary place holder to be swapped
             jLoaded = true;
         }
-        else{
+        else{ // Decrememnt index and ensure nothing is "loaded" or pending to be moved from back
             j--;
             stringj = "";
             jLoaded = false;
         }
         
-        if(iLoaded && jLoaded){
-            a[i] =  stringj;
+        if(iLoaded && jLoaded){ // If there are two elements waiting to be swapped
+            a[i] =  stringj; // Swap and increment/decrement both indexes
             a[j] =  stringi;
             i++;
             j--;
@@ -166,7 +164,7 @@ int divide(string a[], int n, string divider){
     }
     
 
-    return i;
+    return i; 
 }
 
 
