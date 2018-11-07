@@ -164,7 +164,7 @@ int divide(string a[], int n, string divider){
     }
     
 
-    return i; 
+    return i;
 }
 
 
@@ -203,13 +203,15 @@ int main() {
     assert(positionOfMax(candidate, 7) == 3);
     assert(positionOfMax(candidate, 0) == -1);
     assert(positionOfMax(candidate, -1) == -1);
+    assert(positionOfMax(candidate, 1) == 0);
     cout << "Tests for positionOfMax() passed!" << endl;
-    //Need More
+
     
     //Test cases for rotateLeft()
     string politician[5] = { "eleni", "dianne", "fiona", "kevin", "gavin" };
     assert(rotateLeft(politician, 5, 1) == 1 && politician[0] == "eleni" && politician[1] == "fiona" && politician[2] == "kevin" && politician[3] == "gavin" && politician[4] == "dianne");
     string testRotate[5] = { "eleni", "dianne", "fiona", "kevin", "gavin" };
+    assert(rotateLeft(testRotate, 5, 4) ==4 && testRotate[0] == "eleni" && testRotate[1] == "dianne" && testRotate[2] == "fiona" && testRotate[3] == "kevin" && testRotate[4] == "gavin");
     assert(rotateLeft(testRotate, 5, 3) == 3 && testRotate[0] == "eleni" && testRotate[1] == "dianne" && testRotate[2] == "fiona" && testRotate[3] == "gavin" && testRotate[4] == "kevin");
     assert(rotateLeft(testRotate, 3, 1) == 1 && testRotate[0] == "eleni" && testRotate[1] == "fiona" && testRotate[2] == "dianne" && testRotate[3] == "gavin" && testRotate[4] == "kevin");
     assert(rotateLeft(testRotate, -1, -4) == -1);
@@ -530,14 +532,6 @@ int main() {
     assert(divide(h, 7, "ed") == 1);
 
     assert(divide(h, 7, "") == 0);
-    for (int i=0; i<7; i++) {
-        cout << h[i] << endl;
-    }
-    
-    
-   
-    
-    
     
     cout << "All Tests Passed!" << endl;
 }

@@ -5,5 +5,138 @@ Prof. Smallberg
 
 Report - Programming Assignment 4: Ask Your Boss for Arrays
 
-1) 
+1) It was challenging accomplishing the functions without creating auxiliary arrays. I had to work with indexes that vary depending on if the amount of elements are odd or even, making sure not to go out of bounds. What helped was to use the debugger and step through the code to make sure it runs how it should, adding if statements to sweep up special cases.
+
+
+
+2) Test Cases
+
+For appendToAll():
+people[5] = { "dianne", "fiona", "ed", "xavier", "greg" }
+Regular append - appendToAll(people, 5, "!!!") 
+Append to no elements - appendToAll(people, 0, "!!!") 
+Negative n - appendToAll(peopletwo, -4, "!!!")
+Append to less elements than are in the array - appendToAll(peopletwo, 2, "!!!")
+
+For lookup():
+lookupStr[6] = { "dianne", "fiona", "ed", "xavier", "greg", "ed"};
+Regular lookup - lookup(lookupStr, 5, "fiona")
+Negative n - lookup(lookupStr, -1, "fiona")
+Make sure it returns first istance- lookup(lookupStr, 6, "ed")
+Capitalization doesn't match - lookup(lookupStr, 5, "Xavier")
+N is 0 - lookup(lookupStr, 0, "fiona")
+Element is at beginning of array - lookup(lookupStr, 5, "dianne")
+N is 1 - lookup(lookupStr, 1, "dianne")
+
+For positionOfMax()
+candidate[7] = { "dianne", "fiona", "gavin", "xavier", "ed", "betty", "xavier"};
+Normal positionOfMax implementation - positionOfMax(candidate, 6)
+If there are two elements that match the max - positionOfMax(candidate, 7)
+N is 0 - positionOfMax(candidate, 0)
+N is 1 - positionOfMax(candidate, -1)
+Has one element - positionOfMax(candidate, 1)
   
+For rotateLeft()
+politician[5] = { "eleni", "dianne", "fiona", "kevin", "gavin" }
+Normal rotate left - rotateLeft(politician, 5, 1) 
+Normal rotate left - rotateLeft(testRotate, 5, 3)
+Using part of the array - rotateLeft(testRotate, 3, 1)
+Negative parameters - rotateLeft(testRotate, -1, -4)
+Rotate from last element (should stay the same) - rotateLeft(testRotate, 5, 4)
+Index greater than n - rotateLeft(testRotate, 2, 4)
+
+For countRuns()
+d[9] = {"xavier", "betty", "john", "john", "ed", "ed", "ed", "john", "john"};
+Normal count Runs - countRuns(d, 9)
+One element - countRuns(d, 1)
+Two elements (different)- countRuns(d, 2)
+4 element, but 3 runs - countRuns(d, 4)
+No elements - countRuns(d, 0)
+Negative n - countRuns(d, -1)
+
+For flip()
+folks[6] = { "betty", "john", "", "xavier", "kevin", "dianne" }
+Normal flip - flip(folks, 4)
+One element - flip(folks, 1)
+No elements - flip(folks, 0)
+N is -1 - flip(folks, -1)
+Odd elements - flip(folks, 5)
+N takes up whole array - flip(folks, 6)
+t[7] = { "greg", "gavin", "ed", "xavier", "", "eleni", "fiona" }
+Whole array flip odd - flip(t, 7)
+
+For differ()
+string folks2[6] = { "betty", "john", "", "xavier", "kevin", "dianne" };
+string group[5] = { "betty", "john", "dianne", "", "xavier" };
+Normal differ - differ(folks2, 6, group, 5)
+Small arrays - differ(folks2, 2, group, 1)
+Zero elements - differ(folks2, 0, group, 1)
+Another normal differ - differ(folks2, 3, group, 6)
+Normal differ - differ(folks2, 2, group, 6)
+string str1[6] = { "betty", "john", "", "xavier", "kevin", "dianne" };
+string str2[5] = { "john", "john", "dianne", "", "xavier" };
+Differ on first element - differ(str1, 2, str2, 6)
+string str3[6] = { "betty", "john", "", "xavier", "kevin", "dianne" };
+string str4[5] = { "betty", "john", "", "xavier", "kevin" };
+Smaller array matches larger completely - differ(str3, 6, str4, 5)
+
+For subsequence()
+string names[10] = { "eleni", "gavin", "kevin", "greg", "betty", "fiona" };
+string names1[10] = { "gavin", "kevin", "greg" };
+Normal subsequence - subsequence(names, 6, names1, 3)
+names2[10] = { "eleni", "greg" };
+Subsequence DNE - subsequence(names, 5, names2, 2)
+Second array 0 elements - subsequence(names, 5, names2, 0)
+First array 0 elements - subsequence(names, 0, names2, 2)
+First array shorter than second array - subsequence(names, 1, names2, 2)
+names3[5] ={"eleni", "gavin", "kevin", "greg", "betty"};
+string names4[5] = {"greg","betty"};
+string names5[5] = {"greg", "alex"};
+Normal subsequence - subsequence(names3, 5, names3, 3)
+Normal subsequence - subsequence(names3, 5, names4, 2)
+Arrays same length - subsequence(names3, 5, names3, 5)
+Match is present, 1 element in second array - subsequence(names3, 5, names5, 1)
+No match present, all of each array used - subsequence(names3, 5, names5, 2)
+
+For lookupAny()
+string lookupNames[10] = { "eleni", "gavin", "kevin", "greg", "betty", "fiona" };
+string set1[10] = { "dianne", "betty", "greg", "gavin" };
+Normal lookup - lookupAny(lookupNames, 6, set1, 4)
+set2[10] = { "xavier", "ed" }
+Should be none found - lookupAny(lookupNames, 6, set2, 2)
+Two arrays are exact - lookupAny(lookupNames, 4, lookupNames, 4)
+set2[2] = "eleni";
+Math at the beginning - lookupAny(lookupNames, 4, set2, 3)
+set2[2] = "fiona";
+Different match, second element in second array - lookupAny(lookupNames, 4, set2, 3)
+Using full arrays - lookupAny(lookupNames, 6, set2, 3)
+
+For divide()
+candidates[6] = { "dianne", "fiona", "gavin", "xavier", "ed", "betty" }
+Normal divide - divide(candidates, 6, "eleni")
+candidate2[4] = { "gavin", "kevin", "fiona", "john" }
+Normal divide - divide(divide, 4, "John")
+abcs[7] = {"b", "c", "d", "e", "f", "g", "h"}
+Divider > all elements - divide(abcs, 7, "z")
+Divider <= all elements - divide(abcs, 7, "a")
+Divider in the middle - divide(abcs, 7, "e")
+Divider in the middle - divide(abcs, 7, "f")
+Divider in the middle - divide(abcs, 7, "h")
+Divider towards the beginning but not >= everything - divide(abcs, 7, "b")
+abcsScattered[10] = {"s","c","e","j","q","y","a","z","x","x"}
+Array not already ordered - divide(abcsScattered, 10, "b")
+Array not already ordered divider >= everything - divide(abcsScattered, 10, "a")
+Array not already ordered divider <= everything - divide(abcsScattered, 10, "z")
+Array not already ordered divider < everything - divide(abcsScattered, 10, "ze")
+Array not already ordered divider in middle - divide(abcsScattered, 10, "m")
+Array not already ordered divider towards end - divide(abcsScattered, 10, "x")
+abcsScattered2[10] = {"s","c","e","j","q","x","x","a","y","y"}
+Array has multiples - divider(abcsScattered2, 10, "x")
+
+Plus tests from spec.
+
+
+
+
+
+
