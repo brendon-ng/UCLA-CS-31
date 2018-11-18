@@ -58,12 +58,12 @@ int makeProper(char word1[][MAX_WORD_LENGTH+1], char word2[][MAX_WORD_LENGTH+1],
         int deleteIndex = -1;
         
         for(int i = 0; i < editing; i++){
-            if(firstWord == word1[i] && secondWord == word2[i]){
+            if(strcmp(firstWord, word1[i])==0 && strcmp(secondWord,word2[i])==0){
                 hasOccurred = true;
                 deleteIndex = i;
                 break;
             }
-            if(firstWord == word2[i] && secondWord == word1[i]){
+            if(strcmp(firstWord, word2[i])==0 && strcmp(secondWord, word1[i])==0){
                 hasOccurred = true;
                 deleteIndex = i;
                 break;
@@ -71,7 +71,6 @@ int makeProper(char word1[][MAX_WORD_LENGTH+1], char word2[][MAX_WORD_LENGTH+1],
         }
         
         if(hasOccurred){
-            cout << "ocurrr" << endl;
             separation[deleteIndex] = max(separation[deleteIndex], separation[inspecting]);
             inspecting++;
             continue;
@@ -95,12 +94,8 @@ int makeProper(char word1[][MAX_WORD_LENGTH+1], char word2[][MAX_WORD_LENGTH+1],
 
 
 int main() {
-    char i[6] = "UCLA";
-    char j[10] = "UCLA";
-    bool equal = (i == j);
-    cout << equal << endl;
-    char word1[5][MAX_WORD_LENGTH+1] = {"Bruin", "computer", "stats", "bruin", "UCLA"};
-    char word2[5][MAX_WORD_LENGTH+1] = {"Bear", "science!", "math", "bear", "LA"};
+    char word1[5][MAX_WORD_LENGTH+1] = {"Bruin", "computer", "stats", "BEAR", "UCLA"};
+    char word2[5][MAX_WORD_LENGTH+1] = {"Bear", "science!", "math", "bruins", "LA"};
     int separation[5] = {1, 2, -1, 5, 8};
     
     int n = makeProper(word1, word2, separation, 5);
