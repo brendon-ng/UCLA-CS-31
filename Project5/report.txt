@@ -4,3 +4,128 @@ UCLA CS 31 Lec 1 Dis 1A
 Prof. Smallberg
 
 Report - Programming Assignment 5: Pattern Recognition
+
+1)
+Some obstacles I had to overcome were ensuring there was no undefined behavior and that we never searched for an out of bounds element of an array. I also had trouble handling words that were longer than 20 characters when creating an array of words in the document. I ended up having to go back and change a character in the word that was too long to a symbol to make it ineligible for a pattern. I used the index for the char in each word to tell me if the word was too long, if it was past a certain point, I ignored the following chars until a space.
+
+2)
+For makeProper(), I went through the array of patterns with an editing index and an inspecting index. I checked the pattern at each the inspecting index as it iterated thru the array. If it was an invalid pattern, the inspecting index would move forward but the editing index would stay, skipping the invalid pattern. If the pattern was valid, the program copies the pattern at the inspecting index to the editing index, then both are incremented. The result is an array of valid patterns from 0 to the final editing index.
+...
+int makeProper(char word1[][MAX_WORD_LENGTH+1], char word2[][MAX_WORD_LENGTH+1], int separation[], int nPatterns)
+	iterate through all patterns
+		if separation negative or if one of the words has a non alpha char
+			move on to inspect next element, skipping current one
+			continue loop
+		If the 2 word combination has occurred previously, 
+			move on to inspect next element, skipping current one
+			set separation of the last occurrence to the max of the two separations
+			continue loop
+		if it makes it though the two tests, copy the inspecting element to the editing element and increment both editing element and inspecting element
+
+	return the final editing element value signifying how many valid patterns there are.
+...
+
+For rate() I first went through each character and assigning it to an array of C-strings that made up the words in the document. Spaces indicated where to switch to the next element in that array signifying a new word and non letter characters were simply ignored. The function then iterated through the array of words, searching for matching patterns and tallying them up as each pattern was checked.
+...
+int rate(const char document[], const char word1[][MAX_WORD_LENGTH+1], const char word2[][MAX_WORD_LENGTH+1], const int separation[], int nPatterns)
+	handle non positive values of nPatterns
+	Iterate through every character in document
+		Add character to current word in array of c-strings
+		if the character is a space and the previous one was not a space, end of word, increment word index, start writing on a new line in words array.
+		if the word is not a letter, ignore it
+	Iterate through each pattern in list of patterns
+		iterate through each word in words array
+			if the current word matches word1 of current pattern
+				check if word 2 has been matched previously
+					if yes, break out of loop and increment # of patterns
+			if the current word matches word 2 of the current pattern
+				check if word 1 has been matched previously
+					if yes, break out of loop and increment # of patterns
+			If it has been too long since the last match, reset the previous matches
+...
+
+3) 
+Test Cases for makeProper():
+Test 0)
+char word1[10][MAX_WORD_LENGTH+1] = {"mad", "deranged", "NEFARIOUS", "half-witted", "robot", "plot", "have", "NeFaRiOuS"};
+char word2[10][MAX_WORD_LENGTH+1] = {"scientist", "robot", "PLOT", "assistant", "deranged", "Nefarious", "mad", "pLoT" };
+int separation[10] = {1, 3, 0, 2, 1, 0, 12, 0};
+makeProper(word1, word2, separation, 8);
+Why? Normal functionality, tests duplicate patterns in opposite order, capitalization, non letter characters, from Spec
+
+Test 1)
+char word11[10][MAX_WORD_LENGTH+1] = {""};
+char word21[10][MAX_WORD_LENGTH+1] = {"scientist"};
+int separation1[10] = {1};
+makeProper(word11, word21, separation1, 1);
+Why? One, invalid element, should return 0
+
+Test 2)
+char word12[10][MAX_WORD_LENGTH+1] = {"mad", "scientist", "ucla", "BRUINS", "beat", "bell", "mad"};
+char word22[10][MAX_WORD_LENGTH+1] = {"scientist", "mad", "bruins", "GO", "SC", "victory", "scientist"};
+int separation2[10] = {10, 10, 3, 1, 0, -1, 1};
+n2 = makeProper(word12, word22, separation2, 7);
+Why? Tests if there are more than 2 duplicate patterns, capitalization and patterns having other patterns embedded, uses part of the array
+
+Test 3)
+char word13[10][MAX_WORD_LENGTH+1] = {"mad", "scientist", "ucla", "BRUINS", "beat", "bell", "mad"};
+char word23[10][MAX_WORD_LENGTH+1] = {"scientist", "mad", "bruins", "GO", "SC", "victory", "scientist"};
+int separation3[10] = {10, 10, 3, 1, 0, -1, 1};
+n3 = makeProper(word13, word23, separation3, 10);
+Why? Tests if there are more than 2 duplicate patterns, capitalization and patterns having other patterns embedded, uses the whole array, Two identical patterns with identical separations - keep 1
+
+Test 4)
+char word14[10][MAX_WORD_LENGTH+1] = {"mad"};
+char word24[10][MAX_WORD_LENGTH+1] = {"scientist", "mad", "bruins", "GO", "SC", "victory", "scientist"};
+int separation4[10] = {};
+n4 = makeProper(word14, word24, separation4, 10);
+Why? Uneven number of elements between the arrays, should treat it as the lowest length array.
+
+Test 5)
+char word15[10][MAX_WORD_LENGTH+1] = {"mad", "man", "bruin", "go", "beat", "fight", "smart"};
+char word25[10][MAX_WORD_LENGTH+1] = {"scientist", "mad", "bruins", "GO", "SC", "victory", "scientist"};
+int separation5[10] = {4,2,6,7,2,5,0};
+n5 = makeProper(word15, word25, separation5, 7);
+Why? Already proper pattern entered
+
+
+Test Cases for rate():
+
+const int TEST1_NRULES = 4;
+char test1w1[TEST1_NRULES][MAX_WORD_LENGTH+1] = {"mad","deranged", "nefarious", "have"};
+char test1w2[TEST1_NRULES][MAX_WORD_LENGTH+1] = {"scientist", "robot", "plot", "mad"};
+int test1dist[TEST1_NRULES] = {1,  3, 0, 12 };
+Regular functionality - rate("The mad UCLA scientist unleashed a deranged evil giant robot.", test1w1, test1w2, test1dist, TEST1_NRULES)
+Regular functionality with excess spaces - rate("The mad UCLA scientist unleashed    a deranged robot.", test1w1, test1w2, test1dist, TEST1_NRULES)
+Zero patterns, non letter characters - rate("**** 2018 ****", test1w1, test1w2, test1dist, TEST1_NRULES)
+Capitalized pattern with punctuation - rate("  That plot: NEFARIOUS!", test1w1, test1w2, test1dist, TEST1_NRULES)
+Duplicated same pattern - rate("deranged deranged robot deranged robot robot", test1w1, test1w2, test1dist, TEST1_NRULES)
+Hyphenated word doesn't count - rate("That scientist said two mad scientists suffer from deranged-robot fever.", test1w1, test1w2, test1dist, TEST1_NRULES)
+
+char test3w1[1][21] = {"mad"};
+char test3w2[1][21] = {"scientist"};
+int test3dist[1] = {1};
+One pattern, 0 separation - rate("The mad scientist took over the world.", test3w1, test3w2, test3dist, 1)
+One pattern, 1 separation - (rate("A scientist mad at the world invented C++.", test3w1, test3w2, test3dist, 1)
+One pattern, 1 separation, words switched - rate("A mad computer scientist invented C++.", test3w1, test3w2, test3dist, 1)
+One pattern, 1 separation, capitalize - rate("The scientist went MaD!", test3w1, test3w2, test3dist, 1)
+One pattern, 2 separation - rate("The mad UCLA computer scientist unleashed a virus.", test3w1, test3w2, test3dist, 1)
+
+char test4w1[5][21] = {"mad", "ucla", "banana", "shoe", "professor"};
+char test4w2[5][21] = {"scientist", "bruins", "apple", "earring", "smallberg"};
+int test4dist[5] = {2, 0, 40, 5, 1};
+Word of over 20 chars - rate("The mad scientist abcdefghijklmnopqrstuvwxyzshoe earring ucla bruinsabcdefghijklmnopqrstuvwxyz", test4w1, test4w2, test4dist, 5)
+Overlapping patterns - rate("The mad UClA scientist, professor Dr. Smallberg liked to eat Bruin's Banana bread while tying his shoe and looking for his apple earring.!!", test4w1, test4w2, test4dist, 5)
+Multiple instances of word1 before word 2 - rate("Mad word mad word word mad word mad word mad word word scientist", test4w1, test4w2, test4dist, 5)
+
+char test5w1[5][21] = {"mad", "ucla", "banana", "shoe", "professor"};
+char test5w2[5][21] = {"mad", "bruins", "apple", "earring", "smallberg"};
+int test5dist[5] = {2, 0, 40, 5, 1};
+Word1 same as word2, one instance of it - rate("The mad dog", test5w1, test5w2, test5dist, 5)
+Word1 same as word2, 2 separation - (rate("The mad dog went mad", test5w1, test5w2, test5dist, 5)
+Word1 same as word2, 0 separation - rate("The mad mad dog", test5w1, test5w2, test5dist, 5)
+Word1 same as word2, 3 separation - rate("The mad dog was very mad", test5w1, test5w2, test5dist, 5)
+Word1 same as word2, too much separation then a valid instance - rate("The mad dog was very mad mad", test5w1, test5w2, test5dist, 5)
+Word1 same as word2, two instances of too much sep - rate("The mad dog was very mad and he was very mad", test5w1, test5w2, test5dist, 5)
+Backwards patterns - rate("The bruins of ucla loved smallberg the professor and his earring and shoe!!", test5w1, test5w2, test5dist, 5)
+
