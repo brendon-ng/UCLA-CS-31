@@ -128,4 +128,3 @@ Word1 same as word2, 3 separation - rate("The mad dog was very mad", test5w1, te
 Word1 same as word2, too much separation then a valid instance - rate("The mad dog was very mad mad", test5w1, test5w2, test5dist, 5)
 Word1 same as word2, two instances of too much sep - rate("The mad dog was very mad and he was very mad", test5w1, test5w2, test5dist, 5)
 Backwards patterns - rate("The bruins of ucla loved smallberg the professor and his earring and shoe!!", test5w1, test5w2, test5dist, 5)
-
