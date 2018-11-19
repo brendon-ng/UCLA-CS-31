@@ -81,15 +81,7 @@ int makeProper(char word1[][MAX_WORD_LENGTH+1], char word2[][MAX_WORD_LENGTH+1],
     return editing;
 }
 
-void checkPatterns(char words[250][MAX_WORD_LENGTH+1], const char word1[][MAX_WORD_LENGTH+1], const char word2[][MAX_WORD_LENGTH+1], const int separation[], int nPatterns, int word){
-    
-    for(int i=0; i<nPatterns; i++){
-        if(strcmp(words[word], word1[i]) == 0){
-            
-        }
-    }
-    
-}
+
 
 int rate(const char document[], const char word1[][MAX_WORD_LENGTH+1], const char word2[][MAX_WORD_LENGTH+1], const int separation[], int nPatterns){
     
@@ -107,9 +99,6 @@ int rate(const char document[], const char word1[][MAX_WORD_LENGTH+1], const cha
         if(document[i] == ' ' && prevChar != ' '){ //Marks the end of a word
             words[word][charInWord] = '\0';
             charInWord = 0;
-            
-            checkPatterns(words, word1, word2, separation, nPatterns, word);
-            
             word++;
             prevChar = document[i];
         }
@@ -130,6 +119,43 @@ int rate(const char document[], const char word1[][MAX_WORD_LENGTH+1], const cha
     }
     
     words[word][charInWord] = '\0';
+    word++;
+    
+    for(int pat = 0; pat < nPatterns; pat++){
+        int previousMatch = -1;
+        int whichMatch = 0;
+        for(int w = 0; w < word; w++){
+            if(strcmp(words[w], word1[pat]) == 0){
+                if(whichMatch == 2){
+                    patterns++;
+                    break;
+                }
+                else{
+                    whichMatch = 1;
+                    previousMatch = w;
+                }
+            }
+            else if(strcmp(words[w], word2[pat]) == 0){
+                if(whichMatch == 1){
+                    patterns++;
+                    break;
+                }
+                else{
+                    whichMatch = 2;
+                    previousMatch = w;
+                }
+            }
+            if(w > previousMatch + 1 + separation[pat]){
+                whichMatch = 0;
+            }
+            
+        }
+        
+    }
+    
+    
+    
+    
     
     
     return patterns;
@@ -151,5 +177,29 @@ int main() {
         cout << word1[i] << " " << word2[i] << " " << separation[i] << endl;
     }
     
-    cout << rate("That. mad  scientist said two mad. scientists suffer from deranged-robot fever.", word1, word2, separation, 1000) <<  endl;
+
+    
+    const int TEST1_NRULES = 4;
+    char test1w1[TEST1_NRULES][MAX_WORD_LENGTH+1] = {
+        "mad",       "deranged", "nefarious", "have"
+    };
+    char test1w2[TEST1_NRULES][MAX_WORD_LENGTH+1] = {
+        "scientist", "robot",    "plot",      "mad"
+    };
+    int test1dist[TEST1_NRULES] = {
+        1,           3,          0,           12
+    };
+    assert(rate("The mad UCLA scientist unleashed a deranged evil giant robot.",
+                test1w1, test1w2, test1dist, TEST1_NRULES) == 2);
+    assert(rate("The mad UCLA scientist unleashed    a deranged robot.",
+                test1w1, test1w2, test1dist, TEST1_NRULES) == 2);
+    assert(rate("**** 2018 ****",
+                test1w1, test1w2, test1dist, TEST1_NRULES) == 0);
+    assert(rate("  That plot: NEFARIOUS!",
+                test1w1, test1w2, test1dist, TEST1_NRULES) == 1);
+    assert(rate("deranged deranged robot deranged robot robot",
+                test1w1, test1w2, test1dist, TEST1_NRULES) == 1);
+    assert(rate("That scientist said two mad scientists suffer from deranged-robot fever.",
+                test1w1, test1w2, test1dist, TEST1_NRULES) == 0);
+    cout << "All tests succeeded" << endl;
 }
