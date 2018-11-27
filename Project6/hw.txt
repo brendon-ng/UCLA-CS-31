@@ -9,7 +9,7 @@ Project 6 - What's the Point?
 Problem 1)
 A)
 Bug in line "*ptr + 1 = 20;" - needs parentheses, we need to follow the pointer of (ptr+1), we cannot add one after following the pointer ptr.
-Big with the while loop - Currently, with these bugs, the program starts at element 2 of the array, moves to element 1 before printing, then prints element 1, 0, then exhibits undefined behavior. 
+Bug with the while loop - Currently, with these bugs, the program starts at element 2 of the array, moves to element 1 before printing, then prints element 1, 0, then exhibits undefined behavior. 
 The while loop starts at the end of the array and increments backwards, we need to set ptr to point to the first element in the array before starting the loop.
 We should change "ptr--;" to "ptr++;" and move it to after the the cout! When the loop starts, ptr should point to element 0 in the array, print the element THEN change ptr to the next element. 
 Also, the while loop should run under the condition that ptr is less than the third element in the array (arr + 3). 
@@ -67,7 +67,8 @@ int main()
 
 D)
 You cannot compare pointers with a != operator, you need to compare the values that those pointers point to.
-Also, str1 and str2 will never equal zero, the condition on the while loop needs to check if the value str1 and str2 are pointing to are null bytes. The return value also should use the values that the pointers point to as well, we need to use *'s (follow the pointer).
+The condition on the while loop needs to check if the value str1 and str2 are pointing to are null bytes. 
+The return value also should use the values that the pointers point to as well, we need to use *'s (follow the pointer).
 
 bool strequal(const char str1[], const char str2[])
 {
