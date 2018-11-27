@@ -1,0 +1,90 @@
+Brendon Ng
+304-925-492
+UCLA CS 31 Lec 1 Dis 1A
+Prof. Smallberg
+
+Project 6 - What's the Point?
+
+
+Problem 1)
+A)
+Bug in line "*ptr + 1 = 20;" - needs parentheses, we need to follow the pointer of (ptr+1), we cannot add one after following the pointer ptr.
+Big with the while loop - Currently, with these bugs, the program starts at element 2 of the array, moves to element 1 before printing, then prints element 1, 0, then exhibits undefined behavior. 
+The while loop starts at the end of the array and increments backwards, we need to set ptr to point to the first element in the array before starting the loop.
+We should change "ptr--;" to "ptr++;" and move it to after the the cout! When the loop starts, ptr should point to element 0 in the array, print the element THEN change ptr to the next element. 
+Also, the while loop should run under the condition that ptr is less than the third element in the array (arr + 3). 
+
+
+Fixed version:
+int main()
+{
+	int arr[3] = { 5, 10, 15 };
+	int* ptr = arr;
+    
+	*ptr = 30;          // set arr[0] to 30
+	*(ptr + 1) = 20;      // set arr[1] to 20
+	ptr += 2;
+	*ptr = 10;        // set arr[2] to 10
+    
+	ptr = arr;
+	while (ptr <= arr + 3)
+	{
+		cout << *ptr << endl;    // print values
+		ptr++;
+	}
+}
+
+B)
+The pointer pToMax is passed into the findMax function by value so the pointer ptr from the main routine remains unchanged. To fix this, we should pass a reference to the pointer - the third parameter should be int*& pToMax
+
+Fixed version:
+void findMax(int arr[], int n, int*& pToMax)
+{
+        if (n <= 0)
+        return;      // no items, no maximum!
+    
+    	pToMax = arr;
+    
+    	for (int i = 1; i < n; i++)
+    	{
+        	if (arr[i] > *pToMax)
+        		pToMax = arr + i;
+    	}
+} 
+
+C)
+The problem is that the pointer is not initialized before being passed into the function. We can fix this by initializing the pointer to pass to a reference to an integer variable
+In the main, we need to declare an integer first, and pass a reference to that integer to the function computeCube.
+
+Fixed version:
+int main()
+{
+	int x;
+	int* ptr = &x
+	computeCube(5, ptr);
+	cout << "Five cubed is " << ptr << endl;
+}
+
+D)
+You cannot compare pointers with a != operator, you need to compare the values that those pointers point to.
+Also, str1 and str2 will never equal zero, the condition on the while loop needs to check if the value str1 and str2 are pointing to are null bytes. The return value also should use the values that the pointers point to as well, we need to use *'s (follow the pointer).
+
+bool strequal(const char str1[], const char str2[])
+{
+	while (*str1 != 0  &&  str2 != 0)
+        {
+		if (*str1 != *str2)  // compare corresponding characters
+			return false;
+		str1++;            // advance to the next character
+		str2++;
+        }
+        return *str1 == *str2;   // both ended at same time?
+}
+
+E)
+We are trying to point to an array that is defined within a function, not within the main method. The scope of the array is only within that function so the main routine fails to access it.
+
+
+
+
+
