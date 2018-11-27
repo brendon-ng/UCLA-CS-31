@@ -85,6 +85,93 @@ E)
 We are trying to point to an array that is defined within a function, not within the main method. The scope of the array is only within that function so the main routine fails to access it.
 
 
+Problem 2)
+A) double* cat;
+B) double mouse[5];
+C) cat = &mouse[4];
+D) *cat = 25;
+E) *(mouse + 3) = 42;
+F) cat -= 3;
+G) cat[1] = 27;
+H) cat[0] = 54;
+I) bool b = (*cat == *(cat+1));
+J) bool d = (cat == mouse);
+
+
+Problem 3)
+A)
+double mean(const double* scores, int numScores)
+{
+        double tot = 0;
+        for(int i = 0; i < numScores; i++)
+        {
+            tot += *(scores + i);
+        }
+        return tot/numScores;
+}
+
+B)
+const char* findTheChar(const char str[], char chr)
+{
+        for (int k = 0; *(str + k) != 0; k++)
+            if (*(str + k) == chr)
+                return (str + k);
+
+        return nullptr;
+}
+
+C)
+const char* findTheChar(const char str[], char chr)
+{
+	while(*str != 0)
+	{
+		if (*str == chr)
+                	return str;
+		str++;
+	}
+
+        return nullptr;
+}
+
+
+Problem 4)
+3  // Prints the integer 3 because we have a pointer minus a pointer. A pointer to the 6th element in the array minus ptr which at this point is a reference to the 3rd element in the array because of the "ptr += 2" statement. 
+4
+79
+-1
+9
+22
+19
+Step by Step: 
+the maxwell function assigns a pointer to the beginning of the array to ptr, the value at the first element in the array is set to -1, then ptr is incremented by two, pointing now at array[2], assigning 9 to ptr[1] assigns 9 to array[3], then 79 is assigned to the element at (array + 1) which is array[1]. 
+The program prints out a 3 because a pointer minus a pointer is the integer difference, it prints the pointer to the 6th element minus ptr which points to the third element.
+Then, swap1 does not change anything in the main routine as the pointers are passed by value and are only modified within the scope of the swap1 function.
+Then swap2 swaps the values of array[0] and array[2], giving us a final array of {4, 79, -1, 9, 22, 19}.
+
+
+Problem 5)
+
+void removeS(char* cstring)
+{
+	if(*cstring == '\0')
+		return;	
+	
+	char* inspect = &*cstring;
+
+	while(*inspect != 0)
+	{
+		if(*inspect == 's' || *inspect == 'S')
+		{
+			inspect++;
+			continue;
+		}
+
+		*cstring = *inspect;
+		cstring++;
+		inspect++;
+	}
+	*cstring = '\0';
+}
 
 
 
