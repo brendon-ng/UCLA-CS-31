@@ -34,40 +34,30 @@ Pet::Pet(string nm, int initialHealth)
 
 void Pet::eat(int amt)
 {
-    // TODO: Increase the pet's health by the amount
     m_health += amt;
 }
 
 void Pet::play()
 {
-    // TODO: Decrease pet's health by 1 for the energy consumed
     m_health--;
 }
 
 string Pet::name() const
 {
-    // TODO: Return the pet's name.  Delete the following line and
-    // replace it with the correct code.
     return m_name;
 }
 
 int Pet::health() const
 {
-    // TODO: Return the pet's current health level.  Delete the
-    // following line and replace it with the correct code.
     return m_health;
 }
 
 bool Pet::alive() const
 {
-    // TODO: Return whether pet is alive.  (A pet is alive if
-    // its health is greater than zero.)  Delete the following
-    // line and replace it with the correct code.
-    return true; // This implementation compiles, but is incorrect
+    return (m_health > 0);
 }
 
 /////////
-// Do not change any code below this point
 /////////
 
 void reportStatus(const Pet* p)
