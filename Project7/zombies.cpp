@@ -70,9 +70,7 @@ private:
     Arena* m_arena;
     int    m_row;
     int    m_col;
-    // TODO: You'll probably find that a zombie object needs an additional
-    // data member to support your implementation of the behavior affected
-    // by being clubbed and being injured.
+    int m_health;
 };
 
 class Player
@@ -164,6 +162,7 @@ Zombie::Zombie(Arena* ap, int r, int c)
     m_arena = ap;
     m_row = r;
     m_col = c;
+    m_health = 2;
 }
 
 int Zombie::row() const
@@ -173,8 +172,6 @@ int Zombie::row() const
 
 int Zombie::col() const
 {
-    // TODO: TRIVIAL:  Return what column the zombie is at.
-    // Delete the following line and replace it with the correct code.
     return m_col;
 }
 
@@ -183,18 +180,24 @@ void Zombie::move()
     // Attempt to move in a random direction; if we can't move, don't move
     int dir = randInt(0, NUMDIRS-1);  // dir is now UP, DOWN, LEFT, or RIGHT
     
-    // TODO:  Attempt to move in direction dir; if we can't move, don't move.
+    m_arena->determineNewPosition(m_row, m_col, dir);
+
 }
 
 bool Zombie::getAttacked(int dir)  // return true if dies
 {
-    // TODO:  If the zombie has been attacked once before, return true
-    // (since a second attack destroys a zombie).  Otherwise, if possible,
-    // move the zombie in one position in direction dir and return false
-    // (since it survived the injury).  Otherwise, do not move, but return
-    // true (since the momentum from the blow would bump the zombie against
-    // the wall, dealing it an additional fatal injury).
-    return false;  // This implementation compiles, but is incorrect.
+    if (m_health == 1) { //Dies, health goes to 0
+        return true;
+    }
+    
+    m_health--;
+    
+    if((m_arena->determineNewPosition(m_row, m_col, dir)) == false){
+        m_health--;
+        return true;
+    }
+    
+    return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -223,22 +226,16 @@ Player::Player(Arena* ap, int r, int c)
 
 int Player::row() const
 {
-    // TODO: TRIVIAL:  Return what row the player is at.
-    // Delete the following line and replace it with the correct code.
     return m_row;
 }
 
 int Player::col() const
 {
-    // TODO: TRIVIAL:  Return what column the player is at.
-    // Delete the following line and replace it with the correct code.
     return m_col;
 }
 
 int Player::age() const
 {
-    // TODO:  TRIVIAL:  Return the player's age.
-    // Delete the following line and replace it with the correct code.
     return m_age;
 }
 
@@ -250,14 +247,26 @@ void Player::stand()
 void Player::moveOrAttack(int dir)
 {
     m_age++;
-    // TODO:  If there is a zombie adjacent to the player in the direction
-    // dir, attack it.  Otherwise, move the player to that position if
-    // possible (i.e., if the move would not be off the edge of the arena).
+    
+    int r = m_row;
+    int c = m_col;
+    
+    if(!(m_arena->determineNewPosition(r, c, dir)))
+        return;
+
+    
+    if((m_arena->numZombiesAt(r, c)) == 0){
+        m_row = r;
+        m_col = c;
+    }
+    else{
+        m_arena->attackZombieAt(r, c, dir);
+    }
+
 }
 
 bool Player::isDead() const
 {
-    // TODO:  TRIVIAL:  Return whether the player is dead.
     return m_dead;
 }
 
@@ -286,21 +295,20 @@ Arena::Arena(int nRows, int nCols)
 
 Arena::~Arena()
 {
-    // TODO:  Delete the player and all remaining dynamically allocated zombies.
+    delete m_player;
+    for(int i = 0; i < m_nZombies; i++){
+        delete m_zombies[i];
+    }
 }
 
 int Arena::rows() const
 {
-    // TODO:  TRIVIAL:  Return the number of rows in the arena.
-    // Delete the following line and replace it with the correct code.
     return m_rows;
 }
 
 int Arena::cols() const
 {
-    // TODO:  TRIVIAL:  Return the number of columns in the arena.
-    // Delete the following line and replace it with the correct code.
-    return m_cols; 
+    return m_cols;
 }
 
 Player* Arena::player() const
@@ -315,26 +323,42 @@ int Arena::zombieCount() const
 
 int Arena::numZombiesAt(int r, int c) const
 {
-    // TODO:  Return the number of zombies at row r, column c.
-    return 0;  // This implementation compiles, but is incorrect.
+    int num = 0;
+    for(int i = 0; i < m_nZombies; i++){
+        if((m_zombies[i]->col() == c) && (m_zombies[i]->row() == r))
+            num++;
+    }
+    return num;
 }
 
 bool Arena::determineNewPosition(int& r, int& c, int dir) const
 {
-    // TODO:  If a move from row r, column c, one step in direction dir
-    // would go off the edge of the arena, leave r and c unchanged and
-    // return false.  Otherwise, set r or c so that row r, column c, is
-    // now the new position resulting from the proposed move, and
-    // return true.
+
     switch (dir)
     {
         case UP:
-            // TODO:  Implement the behavior if dir is UP.
+            if(r > 1)
+                r--;
+            else
+                return false;
             break;
         case DOWN:
+            if(r < m_rows)
+                r++;
+            else
+                return false;
+            break;
         case LEFT:
+            if(c > 1)
+                c--;
+            else
+                return false;
+            break;
         case RIGHT:
-            // TODO:  Implement the other directions.
+            if(c < m_cols)
+                c++;
+            else
+                return false;
             break;
         default:
             return false;
@@ -355,9 +379,29 @@ void Arena::display() const
             grid[r][c] = '.';
     
     // Indicate each zombie's position
-    // TODO:  If one zombie is at some grid point, set the char to 'Z'.
-    //        If it's 2 though 8, set it to '2' through '8'.
-    //        For 9 or more, set it to '9'.
+    for (int z = 0; z < m_nZombies; z++){
+        int zRow = (m_zombies[z]->row()) - 1;
+        int zCol = (m_zombies[z]->col()) - 1;
+        
+        if(grid[zRow][zCol] == '.')
+            grid[zRow][zCol] = 'Z';
+        else if(grid[zRow][zCol] == 'Z'){
+             grid[zRow][zCol] = '2';
+        }
+        else{
+            int value = grid[zRow][zCol];
+            int zero = '0';
+            value -= zero;
+            if(value == 9)
+                continue;
+            value++;
+            char newVal = value + zero;
+            grid[zRow][zCol] = newVal;
+        }
+        
+    }
+    
+    
     
     // Indicate player's position
     if (m_player != nullptr)
@@ -397,16 +441,16 @@ void Arena::display() const
 
 bool Arena::addZombie(int r, int c)
 {
-    // If there are MAXZOMBIES zombies, return false.  Otherwise,
-    // dynamically allocate a new Zombie at coordinates (r,c).  Save the
-    // pointer to the newly allocated Zombie and return true.
+    if(m_nZombies >= MAXZOMBIES)
+        return false;
+    
+    m_zombies[m_nZombies] = new Zombie(this, r, c);
+    m_nZombies++;
+    return true;
     
     // Your function must work as specified in the preceding paragraph even
     // in this scenario (which won't occur in this game):  MAXZOMBIES
     // are added, then some are destroyed, then more are added.
-    
-    // TODO:  Implement this.
-    return false;  // This implementation compiles, but is incorrect.
 }
 
 bool Arena::addPlayer(int r, int c)
@@ -422,24 +466,37 @@ bool Arena::addPlayer(int r, int c)
 
 bool Arena::attackZombieAt(int r, int c, int dir)
 {
-    // TODO:  Attack one zombie at row r, column c if at least one is at
-    // that position.  If the zombie does not survive the injury, destroy the
-    // zombie object, removing it from the arena, and return true.  Otherwise,
-    // return false (no zombie at (r,c), or zombie didn't die).
-    return false;  // This implementation compiles, but is incorrect.
+    if(numZombiesAt(r, c) ==  0)
+        return false;
+    
+    for(int i = 0; i < m_nZombies; i++){
+        if(m_zombies[i]->row() == r && m_zombies[i]->col() == c){
+            if(m_zombies[i]->getAttacked(dir)){ // If dies
+                delete m_zombies[i];
+                m_nZombies--;
+                m_zombies[i] = m_zombies[m_nZombies];
+                return true;
+            }
+            else
+                return false;
+        }
+    }
+    return false;
 }
 
 bool Arena::moveZombies()
 {
     for (int k = 0; k < m_nZombies; k++)
     {
-        // TODO:  Have the k-th zombie in the arena make one move.
-        //        If that move results in that zombie being in the same
-        //        position as the player, the player dies.
+        m_zombies[k]->move();
+        
+        if((m_zombies[k]->row()) == (m_player->row()) && ((m_zombies[k]->col()) == (m_player->col()))){
+            m_player->setDead();
+        }
     }
     
     // return true if the player is still alive, false otherwise
-    return ! m_player->isDead();
+    return !(m_player->isDead());
 }
 
 ///////////////////////////////////////////////////////////////////////////
