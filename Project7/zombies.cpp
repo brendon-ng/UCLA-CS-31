@@ -6,16 +6,6 @@
 //  Copyright © 2018 Brendon Ng. All rights reserved.
 //
 
-// zombies.cpp
-
-// Portions you are to complete are marked with a TODO: comment.
-// We've provided some incorrect return statements (so indicated) just
-// to allow this skeleton program to compile and run, albeit incorrectly.
-// The first thing you probably want to do is implement the trivial
-// functions (marked TRIVIAL).  Then get Arena::display going.  That gives
-// you more flexibility in the order you tackle the rest of the functionality.
-// As you finish implementing each TODO: item, remove its TODO: comment.
-
 #include <iostream>
 #include <string>
 #include <random>
@@ -192,7 +182,7 @@ bool Zombie::getAttacked(int dir)  // return true if dies
     
     m_health--;
     
-    if((m_arena->determineNewPosition(m_row, m_col, dir)) == false){
+    if((m_arena->determineNewPosition(m_row, m_col, dir)) == false){ //If it gets knocked back into wall
         m_health--;
         return true;
     }
@@ -251,11 +241,11 @@ void Player::moveOrAttack(int dir)
     int r = m_row;
     int c = m_col;
     
-    if(!(m_arena->determineNewPosition(r, c, dir)))
+    if(!(m_arena->determineNewPosition(r, c, dir))) //If it tries to move into a wall, stand
         return;
 
     
-    if((m_arena->numZombiesAt(r, c)) == 0){
+    if((m_arena->numZombiesAt(r, c)) == 0){ //If there are no zombies at new spot - move, else attack
         m_row = r;
         m_col = c;
     }
@@ -333,7 +323,7 @@ int Arena::numZombiesAt(int r, int c) const
 
 bool Arena::determineNewPosition(int& r, int& c, int dir) const
 {
-
+    //Returns false if it tries to move out of the frame
     switch (dir)
     {
         case UP:
@@ -389,13 +379,10 @@ void Arena::display() const
              grid[zRow][zCol] = '2';
         }
         else{
-            int value = grid[zRow][zCol];
-            int zero = '0';
-            value -= zero;
+            int value = grid[zRow][zCol] - '0';
             if(value == 9)
                 continue;
-            value++;
-            char newVal = value + zero;
+            char newVal = 1 + value + '0';
             grid[zRow][zCol] = newVal;
         }
         
@@ -448,9 +435,6 @@ bool Arena::addZombie(int r, int c)
     m_nZombies++;
     return true;
     
-    // Your function must work as specified in the preceding paragraph even
-    // in this scenario (which won't occur in this game):  MAXZOMBIES
-    // are added, then some are destroyed, then more are added.
 }
 
 bool Arena::addPlayer(int r, int c)
@@ -490,7 +474,7 @@ bool Arena::moveZombies()
     {
         m_zombies[k]->move();
         
-        if((m_zombies[k]->row()) == (m_player->row()) && ((m_zombies[k]->col()) == (m_player->col()))){
+        if(m_zombies[k]->row() == m_player->row() && m_zombies[k]->col() == m_player->col()){
             m_player->setDead();
         }
     }
@@ -629,10 +613,7 @@ int main()
 //  clearScreen implementation
 ///////////////////////////////////////////////////////////////////////////
 
-// DO NOT MODIFY OR REMOVE ANY CODE BETWEEN HERE AND THE END OF THE FILE!!!
-// THE CODE IS SUITABLE FOR VISUAL C++, XCODE, AND g++ UNDER LINUX.
-
-// Note to Xcode users:  clearScreen() will just write a newline instead
+// In Xcode, clearScreen() will just write a newline instead
 // of clearing the window if you launch your program from within Xcode.
 // That's acceptable.  (The Xcode output window doesn't have the capability
 // of being cleared.)
